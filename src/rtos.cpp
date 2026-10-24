@@ -68,10 +68,10 @@ void rtosBegin() {
     bb.crash.fresh = 0;
     for (int i = 0; i < taskCount; i++) {
       if (tasks[i].state == QUARANTINE)
-        Serial.printf("[OS] '%s' quarantined for %d ms, other tasks keep running\n",
+        Serial.printf("[OS] '%s' quarantined for %d ms, other tasks keep running\r\n",
                       tasks[i].name, QUARANTINE_MS);
       if (tasks[i].state == FAILED)
-        Serial.printf("[OS] '%s' hung %d times -> FAILED, disabled until power cycle\n",
+        Serial.printf("[OS] '%s' hung %d times -> FAILED, disabled until power cycle\r\n",
                       tasks[i].name, MAX_RESTARTS);
     }
   }
@@ -88,7 +88,7 @@ void rtosWdtCheck() {
   if (ran <= t.timeout_ms) return;
 
   bbOnHang(r, ran, platformStackPct(), platformFreeHeap());
-  Serial.printf("\n[WDT] task '%s' ran %lu ms (limit %lu) -> HUNG. Saving black box, rebooting...\n",
+  Serial.printf("\r\n[WDT] task '%s' ran %lu ms (limit %lu) -> HUNG. Saving black box, rebooting...\r\n",
                 t.name, (unsigned long)ran, (unsigned long)t.timeout_ms);
   Serial.flush();
   platformReboot();
@@ -106,7 +106,7 @@ void rtosStep() {
       if ((int32_t)(now - t.next_run) < 0) continue;
       t.state = READY;
       bbLog(EV_RESTART, (uint8_t)i, bb.restarts[i]);
-      Serial.printf("[OS] task '%s' restarted\n", t.name);
+      Serial.printf("[OS] task '%s' restarted\r\n", t.name);
     }
 
     if (t.state == SLEEPING && (int32_t)(now - t.next_run) >= 0) t.state = READY;
@@ -130,7 +130,7 @@ void rtosStep() {
     if (t.inject) {                  // fault injection from the shell: "hang <task>"
       t.inject = false;
       bbLog(EV_FAULT, (uint8_t)i, 0);
-      Serial.printf("[FAULT] injecting infinite loop in '%s'\n", t.name);
+      Serial.printf("[FAULT] injecting infinite loop in '%s'\r\n", t.name);
       Serial.flush();
       platformSpinForever();
     }

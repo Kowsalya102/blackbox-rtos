@@ -91,7 +91,7 @@ static void printEvent(const BBEvent& e) {
 }
 
 void bbPrintLog() {
-  Serial.printf("--- BLACK BOX: last %u events (oldest first) ---\n", (unsigned)bb.count);
+  Serial.printf("--- BLACK BOX: last %u events (oldest first) ---\r\n", (unsigned)bb.count);
   if (bb.count == 0) { Serial.println("(empty)"); return; }
   for (uint16_t i = 0; i < bb.count; i++)
     printEvent(bb.ev[(bb.head + BB_EVENTS - bb.count + i) % BB_EVENTS]);
@@ -101,18 +101,18 @@ void bbPrintCrash() {
   const CrashInfo& c = bb.crash;
   if (!c.valid) { Serial.println("No crash recorded."); return; }
   Serial.println("=========== CRASH REPORT ===========");
-  Serial.printf("Task '%s' (id %u) HUNG in boot #%u at +%lu ms\n",
+  Serial.printf("Task '%s' (id %u) HUNG in boot #%u at +%lu ms\r\n",
                 c.name, (unsigned)c.task, (unsigned)c.boot, (unsigned long)c.at_ms);
-  Serial.printf("It ran %lu ms without returning (limit %lu ms)\n",
+  Serial.printf("It ran %lu ms without returning (limit %lu ms)\r\n",
                 (unsigned long)c.ran_ms,
                 (unsigned long)(c.task < taskCount ? tasks[c.task].timeout_ms : 0));
-  Serial.printf("Stack: %u%% full   Free heap: %lu bytes\n",
+  Serial.printf("Stack: %u%% full   Free heap: %lu bytes\r\n",
                 (unsigned)c.stack_pct, (unsigned long)c.free_heap);
   if (c.task < BB_MAX_TASKS) {
-    Serial.printf("Hang count for this task: %u of %u allowed\n",
+    Serial.printf("Hang count for this task: %u of %u allowed\r\n",
                   (unsigned)bb.restarts[c.task], (unsigned)MAX_RESTARTS);
   }
-  Serial.printf("Last %u events before the crash:\n", (unsigned)bb.snapCount);
+  Serial.printf("Last %u events before the crash:\r\n", (unsigned)bb.snapCount);
   for (uint16_t i = 0; i < bb.snapCount; i++) printEvent(bb.snap[i]);
   Serial.println("====================================");
 }

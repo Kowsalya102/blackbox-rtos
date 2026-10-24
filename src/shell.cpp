@@ -35,14 +35,14 @@ static void cmdPs() {
   Serial.println("ID NAME       STATE       RUNS  HANGS PERIOD WAIT");
   for (int i = 0; i < taskCount; i++) {
     const Task& t = tasks[i];
-    Serial.printf("%-2d %-10s %-11s %5lu %5u %6lu %s\n", i, t.name, stateName(t.state),
+    Serial.printf("%-2d %-10s %-11s %5lu %5u %6lu %s\r\n", i, t.name, stateName(t.state),
                   (unsigned long)t.runs, (unsigned)bb.restarts[i], (unsigned long)t.period,
                   (t.state == BLOCKED && t.waitName) ? t.waitName : "");
   }
 }
 
 static void cmdInfo() {
-  Serial.printf("uptime %lu ms | boot #%u | free heap %lu | stack %u%% used\n",
+  Serial.printf("uptime %lu ms | boot #%u | free heap %lu | stack %u%% used\r\n",
                 (unsigned long)millis(), (unsigned)bb.boots,
                 (unsigned long)platformFreeHeap(), (unsigned)platformStackPct());
 }
@@ -51,7 +51,7 @@ static void cmdHang(const char* arg) {
   int id = findTask(arg);
   if (id < 0) { Serial.println("usage: hang <task name or id>   (see 'ps')"); return; }
   tasks[id].inject = true;
-  Serial.printf("OK: '%s' will hang on its next run. Watchdog limit %lu ms.\n",
+  Serial.printf("OK: '%s' will hang on its next run. Watchdog limit %lu ms.\r\n",
                 tasks[id].name, (unsigned long)tasks[id].timeout_ms);
 }
 
@@ -68,7 +68,7 @@ static void runLine(char* line) {
   else if (!strcasecmp(cmd, "info"))   cmdInfo();
   else if (!strcasecmp(cmd, "clear"))  { bbClear(); Serial.println("black box cleared"); }
   else if (!strcasecmp(cmd, "reboot")) { Serial.println("rebooting..."); Serial.flush(); platformReboot(); }
-  else Serial.printf("unknown command '%s' (try 'help')\n", cmd);
+  else Serial.printf("unknown command '%s' (try 'help')\r\n", cmd);
 }
 
 void shellBegin() {

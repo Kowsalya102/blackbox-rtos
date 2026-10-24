@@ -22,7 +22,7 @@ void ledTask() {
 void sensorTask() {
   int value = 20 + (millis() / 1000) % 15;          // fake temperature
   if (qSend(&sensorQ, value))
-    Serial.printf("[Sensor] sent %d (queue=%d)\n", value, sensorQ.count);
+    Serial.printf("[Sensor] sent %d (queue=%d)\r\n", value, sensorQ.count);
   else
     Serial.println("[Sensor] queue FULL, value dropped");
 }
@@ -30,7 +30,7 @@ void sensorTask() {
 void processTask() {
   int value;
   if (!qReceive(&sensorQ, &value)) return;          // empty -> BLOCKED
-  Serial.printf("[Process] got %d\n", value);
+  Serial.printf("[Process] got %d\r\n", value);
 }
 
 void heartbeatTask() {
@@ -40,7 +40,7 @@ void heartbeatTask() {
 
 void monitorTask() {
   if (!semTake(&beatSem)) return;                   // no token -> BLOCKED
-  Serial.printf("[Monitor] system ok, uptime %lu s\n", (unsigned long)(millis() / 1000));
+  Serial.printf("[Monitor] system ok, uptime %lu s\r\n", (unsigned long)(millis() / 1000));
 }
 
 // ---- kernel start ----
@@ -61,7 +61,7 @@ void setup() {
   int shellId = rtosAdd("Shell", shellTask, 20,   1000);
   tasks[shellId].quiet = true;      // runs every 20 ms: keep it out of the black box
 
-  Serial.println("\nBlackBox RTOS v1.0 booting...");
+  Serial.println("\r\nBlackBox RTOS v1.0 booting...");
   rtosBegin();          // black box init, crash report, watchdog timer
   shellBegin();
 }
