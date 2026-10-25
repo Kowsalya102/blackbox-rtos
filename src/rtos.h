@@ -2,7 +2,7 @@
 // ===== BlackBox RTOS: cooperative kernel =====
 #include <Arduino.h>
 
-#define MAX_TASKS      8
+#define MAX_TASKS      12
 #define QUARANTINE_MS  3000   // a hung task sits out this long after reboot
 #define MAX_RESTARTS   3      // after this many hangs the task is FAILED for good
 #define Q_SIZE         4
@@ -45,6 +45,7 @@ int  rtosAdd(const char* name, void (*fn)(), uint32_t period, uint32_t timeout_m
 void rtosBegin();                  // call once after all rtosAdd()
 void rtosReset();                  // clears task table (used by PC tests)
 void rtosStep();                   // call from loop()
+int  rtosCurrentTask();            // id of the task that is running now
 void rtosWdtCheck();               // called by the 100 ms timer
 
 // --- API for tasks ---

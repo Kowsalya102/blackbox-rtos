@@ -47,4 +47,16 @@ void platformSpinForever() {
   volatile uint32_t x = 0;
   for (;;) { x++; }                              // real infinite loop
 }
+
+// 2 kHz tone on a buzzer pin. The LEDC API differs between Arduino core 2.x and 3.x.
+void platformBuzzer(int pin, bool on) {
+  static bool inited = false;
+#if defined(ESP_ARDUINO_VERSION_MAJOR) && ESP_ARDUINO_VERSION_MAJOR >= 3
+  if (!inited) { ledcAttach(pin, 2000, 8); inited = true; }
+  ledcWriteTone(pin, on ? 2000 : 0);
+#else
+  if (!inited) { ledcSetup(0, 2000, 8); ledcAttachPin(pin, 0); inited = true; }
+  ledcWriteTone(0, on ? 2000 : 0);
+#endif
+}
 #endif

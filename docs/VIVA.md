@@ -3,6 +3,29 @@
 ## 1. Project oru line-la
 "Oru task hang aanaalum, OS adhai kandupidichu, enna nadandhuchu nu black box-la save panni, system-ah recover panni, reboot-ku apram report tharum."
 
+
+## 1b. Application: Industrial Multi-Sensor Monitoring and Fault Recovery System
+
+Namma RTOS-ku oru real maadhiri velai kudutthirukkom: oru plant-oda **temperature, pressure, level** monitor panradhu.
+
+- 3 sensor tasks (Temp, Pressure, Level) readings-ah **queue** vazhiyaa Analyzer-ku anuppum.
+- Analyzer limit paakkum: temp > 80 C, pressure > 7 bar, level < 10 % or > 90 % = **alarm** (red LED + buzzer). Alarm black box-layum record aagum.
+- Heartbeat **semaphore** kudukkum, Report task 3 second-ku oru status line print pannum.
+- Push button = fault injection. Oru sensor task hang aana: watchdog detect, black box save, reboot, crash report, andha sensor 3 s quarantine, mattha sensors keep reporting, "Temp=STALE" nu report-la theriyum, apram thirumba restart.
+
+**Honest-ah sollunga:** Sensors real illa, potentiometers (simulation). Hang purposely inject pannadhu. "Industrial" = use-case scenario, certified industrial product illa.
+
+**Demo order (Wokwi):**
+1. Temperature pot-ah thirumbi 80 C-ku mela: ALARM, red LED + buzzer.
+2. Thirumba kuraingga: "[OK] ... back to normal".
+3. Red button press: hang inject, "[WDT] ... HUNG ... rebooting".
+4. Reboot-ku apram CRASH REPORT, `ps` (Temp QUARANTINE), `log`.
+5. 3 s apram "task 'Temp' restarted".
+
+**Q: Real sensor-la hang eppadi varum?** I2C/SPI sensor respond pannaama wait panna loop-la maatturadhu, DHT-maadhiri sensor-oda pin wait loop. Namma buttons / `hang` adhai simulate pannudhu.
+
+**Q: Alarm-ku safety guarantee irukka?** Illa. Cooperative, deadline guarantee illa. Safety-critical-ku certified RTOS venum.
+
 ## 2. Architecture (board-la ezhudhi vilakkalaam)
 
 ```

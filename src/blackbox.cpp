@@ -6,6 +6,8 @@
 #define RTC_NOINIT_ATTR
 #endif
 
+static_assert(MAX_TASKS <= BB_MAX_TASKS, "black box must have room for every task");
+
 #define BB_MAGIC (0xB10CB0A7u ^ (uint32_t)sizeof(BlackBox))
 
 RTC_NOINIT_ATTR BlackBox bb;
@@ -20,6 +22,7 @@ static const char* evName(uint8_t t) {
     case EV_HANG:    return "HANG";
     case EV_RESTART: return "RESTART";
     case EV_FAULT:   return "FAULT";
+    case EV_ALARM:   return "ALARM";
   }
   return "?";
 }
@@ -87,6 +90,7 @@ static void printEvent(const BBEvent& e) {
   if (e.type == EV_HANG)    Serial.printf("  ran %d ms", (int)e.arg);
   if (e.type == EV_RESTART) Serial.printf("  restart #%d", (int)e.arg);
   if (e.type == EV_BOOT)    Serial.printf("  boot #%d", (int)e.arg);
+  if (e.type == EV_ALARM)   Serial.printf("  sensor #%d", (int)e.arg);
   Serial.println();
 }
 

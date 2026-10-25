@@ -4,21 +4,49 @@
   "editor": "wokwi",
   "parts": [
     { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
-    { "type": "wokwi-led", "id": "led1", "top": 44.4, "left": 195.8, "attrs": { "color": "red" } },
-    {
-      "type": "wokwi-resistor",
-      "id": "r1",
-      "top": 157.55,
-      "left": 134.4,
-      "attrs": { "value": "1000" }
-    }
+
+    { "type": "wokwi-potentiometer", "id": "pot_temp",  "top": -20, "left": -250, "attrs": {} },
+    { "type": "wokwi-potentiometer", "id": "pot_press", "top": 80,  "left": -250, "attrs": {} },
+    { "type": "wokwi-potentiometer", "id": "pot_level", "top": 180, "left": -250, "attrs": {} },
+
+    { "type": "wokwi-led", "id": "led_status", "top": 10, "left": 250, "attrs": { "color": "green" } },
+    { "type": "wokwi-resistor", "id": "r_status", "top": 70, "left": 215, "attrs": { "value": "220" } },
+
+    { "type": "wokwi-led", "id": "led_alarm", "top": 110, "left": 250, "attrs": { "color": "red" } },
+    { "type": "wokwi-resistor", "id": "r_alarm", "top": 170, "left": 215, "attrs": { "value": "220" } },
+
+    { "type": "wokwi-buzzer", "id": "bz1", "top": -40, "left": 330, "attrs": { "volume": "0.1" } },
+    { "type": "wokwi-pushbutton", "id": "btn_fault", "top": 230, "left": 250, "attrs": { "color": "red" } }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
-    [ "esp:2", "r1:1", "green", [ "h33.64" ] ],
-    [ "r1:2", "led1:A", "green", [ "h18", "v-76.8" ] ],
-    [ "esp:GND.2", "led1:C", "black", [ "v0", "h129.64", "v57.6" ] ]
+
+    [ "pot_temp:SIG",  "esp:34",  "orange", [] ],
+    [ "pot_temp:VCC",  "esp:3V3", "red",    [] ],
+    [ "pot_temp:GND",  "esp:GND.2", "black", [] ],
+
+    [ "pot_press:SIG", "esp:35",  "orange", [] ],
+    [ "pot_press:VCC", "esp:3V3", "red",    [] ],
+    [ "pot_press:GND", "esp:GND.2", "black", [] ],
+
+    [ "pot_level:SIG", "esp:32",  "orange", [] ],
+    [ "pot_level:VCC", "esp:3V3", "red",    [] ],
+    [ "pot_level:GND", "esp:GND.2", "black", [] ],
+
+    [ "esp:2",         "r_status:1",  "green", [] ],
+    [ "r_status:2",    "led_status:A", "green", [] ],
+    [ "led_status:C",  "esp:GND.2",   "black", [] ],
+
+    [ "esp:26",        "r_alarm:1",   "red",   [] ],
+    [ "r_alarm:2",     "led_alarm:A", "red",   [] ],
+    [ "led_alarm:C",   "esp:GND.2",   "black", [] ],
+
+    [ "esp:27",        "bz1:2",       "purple", [] ],
+    [ "bz1:1",         "esp:GND.2",   "black",  [] ],
+
+    [ "esp:4",         "btn_fault:1.l", "blue",  [] ],
+    [ "btn_fault:2.l", "esp:GND.2",     "black", [] ]
   ],
   "dependencies": {}
 }

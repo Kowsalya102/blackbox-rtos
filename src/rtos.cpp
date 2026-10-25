@@ -147,6 +147,8 @@ void rtosStep() {
 }
 
 // ---------- API used by tasks ----------
+int rtosCurrentTask() { return currentTask; }
+
 void sleepMs(uint32_t ms) {
   tasks[currentTask].next_run = millis() + ms;
   tasks[currentTask].state = SLEEPING;

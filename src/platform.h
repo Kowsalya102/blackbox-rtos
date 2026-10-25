@@ -12,3 +12,4 @@ bool platformPowerOn();         // true if this boot was a cold power-on
 uint8_t platformStackPct();     // % of loop-task stack used (high-water mark)
 uint32_t platformFreeHeap();
 void platformSpinForever();     // used by fault injection: never returns
+void platformBuzzer(int pin, bool on);   // 2 kHz tone on/off (buzzer)

@@ -6,11 +6,11 @@
 #include "platform.h"
 
 #define BB_EVENTS     20
-#define BB_MAX_TASKS  8
+#define BB_MAX_TASKS  12
 
 enum EvType : uint8_t {
   EV_BOOT = 1, EV_SWITCH, EV_BLOCK, EV_UNBLOCK,
-  EV_QFULL, EV_HANG, EV_RESTART, EV_FAULT
+  EV_QFULL, EV_HANG, EV_RESTART, EV_FAULT, EV_ALARM
 };
 
 struct BBEvent {
