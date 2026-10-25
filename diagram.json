@@ -5,9 +5,9 @@
   "parts": [
     { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
 
-    { "type": "wokwi-potentiometer", "id": "pot_temp",  "top": -20, "left": -250, "attrs": {} },
-    { "type": "wokwi-potentiometer", "id": "pot_press", "top": 80,  "left": -250, "attrs": {} },
-    { "type": "wokwi-potentiometer", "id": "pot_level", "top": 180, "left": -250, "attrs": {} },
+    { "type": "wokwi-potentiometer", "id": "pot_temp",  "top": -20, "left": -250, "attrs": { "value": "512" } },
+    { "type": "wokwi-potentiometer", "id": "pot_press", "top": 80,  "left": -250, "attrs": { "value": "350" } },
+    { "type": "wokwi-potentiometer", "id": "pot_level", "top": 180, "left": -250, "attrs": { "value": "512" } },
 
     { "type": "wokwi-led", "id": "led_status", "top": 10, "left": 250, "attrs": { "color": "green" } },
     { "type": "wokwi-resistor", "id": "r_status", "top": 70, "left": 215, "attrs": { "value": "220" } },
